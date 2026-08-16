@@ -14,13 +14,39 @@ const labelClass =
   "mb-2 block font-display text-[0.75rem] font-semibold uppercase tracking-[0.2em] text-white/70";
 
 export default function Contact() {
-  const [status, setStatus] = useState<"idle" | "sent">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    // Demo build: no backend yet — wire this to your form endpoint or CRM.
+  /**
+   * Submissions are delivered straight to the inbox via Web3Forms — no server
+   * of our own to run or maintain. The access key is public by design; swap it
+   * in src/data/site.ts to change the receiving inbox.
+   */
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setStatus("sent");
-    event.currentTarget.reset();
+    const form = event.currentTarget;
+    setStatus("sending");
+
+    try {
+      const payload = new FormData(form);
+      payload.append("access_key", site.formAccessKey);
+      payload.append("subject", "New enquiry from the IRONFORGE website");
+      payload.append("from_name", "IRONFORGE Website");
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: payload,
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        setStatus("sent");
+        form.reset();
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
   }
 
   const details = [
@@ -104,7 +130,15 @@ export default function Contact() {
               We reply within one business day.
             </p>
 
-            <form onSubmit={handleSubmit} noValidate={false} className="mt-8 space-y-5">
+            <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+              {/* Honeypot — bots fill this, humans never see it. */}
+              <input
+                type="checkbox"
+                name="botcheck"
+                tabIndex={-1}
+                aria-hidden="true"
+                className="hidden"
+              />
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label htmlFor="name" className={labelClass}>
@@ -164,20 +198,30 @@ export default function Contact() {
                 />
               </div>
 
-              <Button size="lg" className="w-full" type="submit">
-                Send Message
+              <Button
+                size="lg"
+                className="w-full"
+                type="submit"
+                disabled={status === "sending"}
+              >
+                {status === "sending" ? "Sending…" : "Send Message"}
               </Button>
 
               <p aria-live="polite" className="min-h-5 text-sm">
-                {status === "sent" ? (
+                {status === "sent" && (
                   <span className="text-ember">
-                    Thanks — your message has been received. (Demo form: no data is
-                    sent yet.)
+                    Thanks — your message has been sent. We&rsquo;ll get back to you
+                    within one business day.
                   </span>
-                ) : (
+                )}
+                {status === "error" && (
+                  <span className="text-ember">
+                    Something went wrong. Please email us directly at {site.email}.
+                  </span>
+                )}
+                {status === "idle" && (
                   <span className="text-muted">
-                    Demo form for this preview build — connect it to your inbox or
-                    CRM before launch.
+                    We never share your details. No spam — ever.
                   </span>
                 )}
               </p>

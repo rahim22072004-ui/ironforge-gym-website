@@ -11,6 +11,12 @@ export const site = {
   phone: "+1 (555) 123-4567",
   phoneHref: "tel:+15551234567",
   email: "hello@ironforgefitness.com",
+  /**
+   * Web3Forms access key — decides which inbox the contact form delivers to.
+   * Get a new one free at https://web3forms.com and paste it here to switch
+   * the receiving address. This key is safe to expose publicly.
+   */
+  formAccessKey: "7f0d2973-7f7e-4674-afaa-ac9f12946cc5",
   hours: [
     { days: "Monday – Friday", time: "5:00 AM – 11:00 PM" },
     { days: "Saturday – Sunday", time: "7:00 AM – 9:00 PM" },
