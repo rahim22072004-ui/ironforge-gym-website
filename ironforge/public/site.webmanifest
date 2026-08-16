@@ -1,0 +1,13 @@
+{
+  "name": "IRONFORGE Fitness Club",
+  "short_name": "IRONFORGE",
+  "description": "Premium fitness training, expert coaching, modern equipment, and personalized programs.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05060a",
+  "theme_color": "#05060a",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

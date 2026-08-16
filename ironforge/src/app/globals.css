@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   IRONFORGE design tokens
+   Dark luxury gym aesthetic — charcoal canvas, molten ember accent.
+---------------------------------------------------------------- */
+@theme {
+  --color-ink: #05060a;
+  --color-charcoal: #0b0d12;
+  --color-charcoal-2: #11141b;
+  --color-charcoal-3: #171b24;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-strong: rgba(255, 255, 255, 0.16);
+  --color-ember: #ff4d14;
+  --color-ember-soft: #ff7a45;
+  --color-ember-dim: rgba(255, 77, 20, 0.12);
+  --color-muted: #a3a9b7;
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: var(--font-display), "Arial Narrow", ui-sans-serif, system-ui,
+    sans-serif;
+
+  --radius-card: 20px;
+
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ------------------------------- base ------------------------------- */
+* {
+  min-width: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-ember);
+  color: #06070b;
+}
+
+/* Visible, on-brand focus ring for keyboard users. */
+:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* --------------------------- typography ----------------------------- */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.72rem;
+  color: var(--color-ember);
+}
+
+/* ----------------------------- surfaces ----------------------------- */
+.glass {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.hairline {
+  border-color: var(--color-line);
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.035) 1px,
+    transparent 1px
+  );
+  background-size: 3px 3px;
+}
+
+/* --------------------------- interactions --------------------------- */
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 1.5px;
+  width: 100%;
+  background: var(--color-ember);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--ease-premium);
+}
+
+.link-underline:hover::after,
+.link-underline:focus-visible::after,
+.link-underline[data-active="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Scroll reveal — progressively enhanced, content is visible without JS. */
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.8s var(--ease-premium), transform 0.8s var(--ease-premium);
+  will-change: opacity, transform;
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes scrollcue {
+  0% {
+    transform: translateY(-100%);
+  }
+  60%,
+  100% {
+    transform: translateY(340%);
+  }
+}
+
+/* Hide scrollbar on horizontal scroll rails while keeping keyboard access. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
