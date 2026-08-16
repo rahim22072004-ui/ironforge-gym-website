@@ -20,14 +20,14 @@ export default function NotFound() {
         fill
         priority
         sizes="100vw"
-        quality={60}
+        quality={65}
         placeholder="blur"
         blurDataURL={blurPlaceholders["/images/gym-cta-banner.webp"]}
         className="-z-10 object-cover"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(5,6,10,0.92),rgba(5,6,10,0.8))]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(5,6,10,0.72),rgba(5,6,10,0.86))]"
       />
 
       <Container>

@@ -104,7 +104,8 @@ export default async function ProgramPage({ params }: Params) {
             quality={72}
             placeholder="blur"
             blurDataURL={blurPlaceholders[program.image]}
-            className="-z-10 object-cover object-center"
+            style={{ objectPosition: program.heroPosition }}
+            className="-z-10 object-cover"
           />
           <div
             aria-hidden="true"
