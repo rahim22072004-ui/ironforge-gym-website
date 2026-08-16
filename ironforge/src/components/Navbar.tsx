@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Container from "./ui/Container";
 import Button from "./ui/Button";
 import { Close, Menu } from "./ui/Icons";
@@ -12,6 +13,11 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("#home");
   const panelRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  /** On sub-pages the in-page anchors need to point back at the homepage. */
+  const to = (hash: string) => (isHome ? hash : `/${hash}`);
 
   // Solidify the bar once the hero starts scrolling away.
   useEffect(() => {
@@ -21,8 +27,9 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Highlight the section currently in view.
+  // Highlight the section currently in view (homepage only).
   useEffect(() => {
+    if (!isHome) return;
     const sections = navLinks
       .map((l) => document.querySelector<HTMLElement>(l.href))
       .filter((el): el is HTMLElement => Boolean(el));
@@ -41,7 +48,7 @@ export default function Navbar() {
 
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
-  }, []);
+  }, [isHome]);
 
   // Lock scroll + trap focus while the mobile menu is open.
   useEffect(() => {
@@ -92,7 +99,7 @@ export default function Navbar() {
       >
         <Container className="flex items-center justify-between gap-6">
           <Link
-            href="#home"
+            href="/"
             aria-label={`${site.fullName} — back to top`}
             className="group flex items-center gap-2.5"
           >
@@ -114,9 +121,9 @@ export default function Navbar() {
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
-                    href={link.href}
-                    data-active={active === link.href}
-                    aria-current={active === link.href ? "page" : undefined}
+                    href={to(link.href)}
+                    data-active={isHome && active === link.href}
+                    aria-current={isHome && active === link.href ? "page" : undefined}
                     className="link-underline font-display text-[0.95rem] font-semibold uppercase tracking-[0.18em] text-white/75 transition-colors duration-300 hover:text-white data-[active=true]:text-white"
                   >
                     {link.label}
@@ -127,7 +134,7 @@ export default function Navbar() {
           </nav>
 
           <div className="hidden lg:block">
-            <Button href="#membership">Join Now</Button>
+            <Button href={to("#membership")}>Join Now</Button>
           </div>
 
           <button
@@ -174,7 +181,7 @@ export default function Navbar() {
             {navLinks.map((link, i) => (
               <li key={link.href} className="border-b border-white/8">
                 <Link
-                  href={link.href}
+                  href={to(link.href)}
                   onClick={() => setOpen(false)}
                   className="flex items-baseline gap-4 py-5 font-display text-[2rem] font-bold uppercase leading-none tracking-wide text-white"
                 >
@@ -188,7 +195,7 @@ export default function Navbar() {
           </ul>
 
           <div className="mt-8 space-y-3 pb-10">
-            <Button href="#membership" size="lg" className="w-full" onClick={() => setOpen(false)}>
+            <Button href={to("#membership")} size="lg" className="w-full" onClick={() => setOpen(false)}>
               Join Now
             </Button>
             <p className="pt-2 text-sm text-muted">
@@ -215,7 +222,7 @@ export default function Navbar() {
             </p>
             <p className="truncate text-xs text-muted">No contract. Cancel anytime.</p>
           </div>
-          <Button href="#membership">Join Now</Button>
+          <Button href={to("#membership")}>Join Now</Button>
         </div>
       </div>
     </>

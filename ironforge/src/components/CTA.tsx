@@ -2,6 +2,7 @@ import Image from "next/image";
 import Container from "./ui/Container";
 import Button from "./ui/Button";
 import { ArrowRight } from "./ui/Icons";
+import { blurPlaceholders } from "@/data/blur";
 
 export default function CTA() {
   return (
@@ -13,6 +14,8 @@ export default function CTA() {
         loading="lazy"
         sizes="100vw"
         quality={70}
+        placeholder="blur"
+        blurDataURL={blurPlaceholders["/images/gym-cta-banner.webp"]}
         className="-z-10 object-cover object-center"
       />
       <div

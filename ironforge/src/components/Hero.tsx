@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Container from "./ui/Container";
+import { blurPlaceholders } from "@/data/blur";
 import Button from "./ui/Button";
 import { ArrowRight } from "./ui/Icons";
 
@@ -25,6 +26,8 @@ export default function Hero() {
         fetchPriority="high"
         sizes="100vw"
         quality={72}
+        placeholder="blur"
+        blurDataURL={blurPlaceholders["/images/gym-hero.webp"]}
         // Shift the crop on narrow screens so the athlete stays in frame.
         className="-z-10 object-cover object-[66%_center] sm:object-center"
       />

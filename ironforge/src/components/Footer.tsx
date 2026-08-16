@@ -1,20 +1,13 @@
 import Link from "next/link";
 import Container from "./ui/Container";
 import { Facebook, Instagram, Mail, MapPin, Phone, XSocial, YouTube } from "./ui/Icons";
-import { navLinks, site } from "@/data/site";
+import { navLinks, programs, site } from "@/data/site";
 
 const socials = [
   { Icon: Instagram, label: "IRONFORGE on Instagram" },
   { Icon: Facebook, label: "IRONFORGE on Facebook" },
   { Icon: XSocial, label: "IRONFORGE on X" },
   { Icon: YouTube, label: "IRONFORGE on YouTube" },
-];
-
-const programLinks = [
-  "Strength Training",
-  "Functional Fitness",
-  "Personal Training",
-  "HIIT & Conditioning",
 ];
 
 export default function Footer() {
@@ -25,7 +18,7 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:gap-10">
           {/* Brand */}
           <div>
-            <Link href="#home" className="inline-flex items-center gap-2.5">
+            <Link href="/" className="inline-flex items-center gap-2.5">
               <span
                 aria-hidden="true"
                 className="grid h-9 w-9 place-items-center rounded-[10px] bg-ember text-ink"
@@ -71,7 +64,7 @@ export default function Footer() {
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
-                    href={link.href}
+                    href={`/${link.href}`}
                     className="text-muted transition-colors duration-300 hover:text-ember"
                   >
                     {link.label}
@@ -90,13 +83,13 @@ export default function Footer() {
               Programs
             </h2>
             <ul className="mt-5 space-y-3">
-              {programLinks.map((program) => (
-                <li key={program}>
+              {programs.map((program) => (
+                <li key={program.slug}>
                   <Link
-                    href="#programs"
+                    href={`/programs/${program.slug}`}
                     className="text-muted transition-colors duration-300 hover:text-ember"
                   >
-                    {program}
+                    {program.title}
                   </Link>
                 </li>
               ))}
@@ -144,12 +137,12 @@ export default function Footer() {
           <p>© 2026 IronForge Fitness. All rights reserved.</p>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             <li>
-              <Link href="#home" className="transition-colors hover:text-ember">
+              <Link href="/" className="transition-colors hover:text-ember">
                 Privacy Policy
               </Link>
             </li>
             <li>
-              <Link href="#home" className="transition-colors hover:text-ember">
+              <Link href="/" className="transition-colors hover:text-ember">
                 Terms &amp; Conditions
               </Link>
             </li>

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
 import { gallery } from "@/data/site";
+import { blurPlaceholders } from "@/data/blur";
 
 export default function Gallery() {
   return (
@@ -42,6 +43,8 @@ export default function Gallery() {
                 fill
                 loading="lazy"
                 sizes="(min-width: 1024px) 45vw, (min-width: 640px) 46vw, 92vw"
+                placeholder="blur"
+                blurDataURL={blurPlaceholders[item.src]}
                 className="object-cover transition-transform duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"
               />
               <div

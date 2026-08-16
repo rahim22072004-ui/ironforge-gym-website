@@ -3,6 +3,7 @@ import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
 import { Instagram, XSocial } from "./ui/Icons";
 import { trainers } from "@/data/site";
+import { blurPlaceholders } from "@/data/blur";
 
 export default function Trainers() {
   return (
@@ -40,6 +41,8 @@ export default function Trainers() {
                   fill
                   loading="lazy"
                   sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw"
+                  placeholder="blur"
+                  blurDataURL={blurPlaceholders[trainer.image]}
                   className="object-cover object-top transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
                 />
                 <div

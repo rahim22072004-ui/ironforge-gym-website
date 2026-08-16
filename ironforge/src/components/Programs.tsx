@@ -4,6 +4,7 @@ import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
 import { ArrowUpRight } from "./ui/Icons";
 import { programs } from "@/data/site";
+import { blurPlaceholders } from "@/data/blur";
 
 export default function Programs() {
   return (
@@ -35,7 +36,7 @@ export default function Programs() {
           {programs.map((program, i) => (
             <li key={program.title} data-reveal-index={i} className="reveal">
               <Link
-                href="#contact"
+                href={`/programs/${program.slug}`}
                 aria-label={`${program.title} — learn more`}
                 className="group relative block h-full overflow-hidden rounded-[var(--radius-card)] border border-white/10 bg-ink transition-colors duration-500 hover:border-ember/50"
               >
@@ -46,6 +47,8 @@ export default function Programs() {
                     fill
                     loading="lazy"
                     sizes="(min-width: 1024px) 23vw, (min-width: 640px) 46vw, 92vw"
+                    placeholder="blur"
+                    blurDataURL={blurPlaceholders[program.image]}
                     className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.07]"
                   />
                   <div

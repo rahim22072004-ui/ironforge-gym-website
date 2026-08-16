@@ -5,16 +5,38 @@ import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
 import Button from "./ui/Button";
 import { Clock, Mail, MapPin, Phone } from "./ui/Icons";
+import MapEmbed from "./MapEmbed";
 import { site } from "@/data/site";
 
 const fieldClass =
-  "w-full rounded-xl border border-white/12 bg-white/[0.04] px-4 py-3.5 text-white placeholder:text-white/35 transition-colors duration-300 hover:border-white/25 focus:border-ember focus:bg-white/[0.06] focus:outline-none";
+  "w-full rounded-xl border bg-white/[0.04] px-4 py-3.5 text-white placeholder:text-white/35 transition-colors duration-300 focus:bg-white/[0.06] focus:outline-none";
+
+const fieldOk = "border-white/12 hover:border-white/25 focus:border-ember";
+const fieldBad = "border-ember/70 bg-ember/[0.06]";
 
 const labelClass =
   "mb-2 block font-display text-[0.75rem] font-semibold uppercase tracking-[0.2em] text-white/70";
 
+type Errors = Partial<Record<"name" | "email" | "message", string>>;
+
+function validate(data: FormData): Errors {
+  const errors: Errors = {};
+  const name = String(data.get("name") ?? "").trim();
+  const email = String(data.get("email") ?? "").trim();
+  const message = String(data.get("message") ?? "").trim();
+
+  if (name.length < 2) errors.name = "Please tell us your name.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))
+    errors.email = "That email address doesn't look right.";
+  if (message.length < 10)
+    errors.message = "A little more detail helps us reply properly.";
+
+  return errors;
+}
+
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [errors, setErrors] = useState<Errors>({});
 
   /**
    * Submissions are delivered straight to the inbox via Web3Forms — no server
@@ -24,10 +46,19 @@ export default function Contact() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
+    const payload = new FormData(form);
+
+    const found = validate(payload);
+    setErrors(found);
+    if (Object.keys(found).length > 0) {
+      const first = document.getElementById(Object.keys(found)[0]);
+      first?.focus();
+      return;
+    }
+
     setStatus("sending");
 
     try {
-      const payload = new FormData(form);
       payload.append("access_key", site.formAccessKey);
       payload.append("subject", "New enquiry from the IRONFORGE website");
       payload.append("from_name", "IRONFORGE Website");
@@ -40,6 +71,7 @@ export default function Contact() {
 
       if (result.success) {
         setStatus("sent");
+        setErrors({});
         form.reset();
       } else {
         setStatus("error");
@@ -121,6 +153,8 @@ export default function Contact() {
                 </div>
               </li>
             </ul>
+
+            <MapEmbed />
           </div>
 
           {/* Form */}
@@ -130,7 +164,8 @@ export default function Contact() {
               We reply within one business day.
             </p>
 
-            <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+            {/* noValidate: we show our own inline messages instead of the browser bubbles. */}
+            <form onSubmit={handleSubmit} noValidate className="mt-8 space-y-5">
               {/* Honeypot — bots fill this, humans never see it. */}
               <input
                 type="checkbox"
@@ -151,8 +186,15 @@ export default function Contact() {
                     autoComplete="name"
                     required
                     placeholder="Jordan Miller"
-                    className={fieldClass}
+                    aria-invalid={Boolean(errors.name)}
+                    aria-describedby={errors.name ? "name-error" : undefined}
+                    className={`${fieldClass} ${errors.name ? fieldBad : fieldOk}`}
                   />
+                  {errors.name && (
+                    <p id="name-error" className="mt-2 text-sm text-ember">
+                      {errors.name}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor="email" className={labelClass}>
@@ -165,8 +207,15 @@ export default function Contact() {
                     autoComplete="email"
                     required
                     placeholder="you@email.com"
-                    className={fieldClass}
+                    aria-invalid={Boolean(errors.email)}
+                    aria-describedby={errors.email ? "email-error" : undefined}
+                    className={`${fieldClass} ${errors.email ? fieldBad : fieldOk}`}
                   />
+                  {errors.email && (
+                    <p id="email-error" className="mt-2 text-sm text-ember">
+                      {errors.email}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -180,7 +229,7 @@ export default function Contact() {
                   type="tel"
                   autoComplete="tel"
                   placeholder="+1 (555) 000-0000"
-                  className={fieldClass}
+                  className={`${fieldClass} ${fieldOk}`}
                 />
               </div>
 
@@ -194,8 +243,15 @@ export default function Contact() {
                   rows={5}
                   required
                   placeholder="Tell us about your goals…"
-                  className={`${fieldClass} resize-y`}
+                  aria-invalid={Boolean(errors.message)}
+                  aria-describedby={errors.message ? "message-error" : undefined}
+                  className={`${fieldClass} resize-y ${errors.message ? fieldBad : fieldOk}`}
                 />
+                {errors.message && (
+                  <p id="message-error" className="mt-2 text-sm text-ember">
+                    {errors.message}
+                  </p>
+                )}
               </div>
 
               <Button

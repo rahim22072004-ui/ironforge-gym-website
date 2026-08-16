@@ -1,6 +1,6 @@
 import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
-import { Quote } from "./ui/Icons";
+import { Quote, Star } from "./ui/Icons";
 import { testimonials } from "@/data/site";
 
 export default function Testimonials() {
@@ -38,7 +38,14 @@ export default function Testimonials() {
               className="reveal group relative flex flex-col justify-between overflow-hidden rounded-[var(--radius-card)] border border-white/10 bg-ink p-8 transition-all duration-500 hover:-translate-y-1 hover:border-ember/40"
             >
               <div>
-                <Quote className="h-8 w-8 text-ember/60" />
+                <div className="flex items-center justify-between gap-4">
+                  <Quote className="h-8 w-8 text-ember/60" />
+                  <span className="flex gap-0.5" role="img" aria-label="Rated 5 out of 5">
+                    {Array.from({ length: 5 }, (_, s) => (
+                      <Star key={s} className="h-4 w-4 text-ember" />
+                    ))}
+                  </span>
+                </div>
                 <blockquote className="mt-6 text-[1.05rem] leading-relaxed text-white/85">
                   &ldquo;{t.quote}&rdquo;
                 </blockquote>

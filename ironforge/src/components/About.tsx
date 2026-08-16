@@ -3,6 +3,7 @@ import Container from "./ui/Container";
 import Button from "./ui/Button";
 import SectionHeading from "./ui/SectionHeading";
 import { ArrowUpRight, Check } from "./ui/Icons";
+import { blurPlaceholders } from "@/data/blur";
 
 const pillars = [
   "Coaches who know your name and your numbers",
@@ -25,6 +26,8 @@ export default function About() {
                 height={897}
                 loading="lazy"
                 sizes="(min-width: 1024px) 46vw, 92vw"
+                placeholder="blur"
+                blurDataURL={blurPlaceholders["/images/gym-interior.webp"]}
                 className="h-full w-full object-cover"
               />
               <div

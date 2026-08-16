@@ -21,6 +21,12 @@ export const site = {
     { days: "Monday – Friday", time: "5:00 AM – 11:00 PM" },
     { days: "Saturday – Sunday", time: "7:00 AM – 9:00 PM" },
   ],
+  /** Digits only, with country code — used to build the WhatsApp link. */
+  whatsapp: "15551234567",
+  whatsappMessage:
+    "Hi IRONFORGE! I'd like to know more about your memberships and free trial.",
+  /** Shown on the map card and used for the "Get directions" link. */
+  mapQuery: "123 Fitness Avenue, Downtown",
 } as const;
 
 export const navLinks = [
@@ -28,6 +34,7 @@ export const navLinks = [
   { label: "About", href: "#about" },
   { label: "Programs", href: "#programs" },
   { label: "Trainers", href: "#trainers" },
+  { label: "Schedule", href: "#schedule" },
   { label: "Membership", href: "#membership" },
   { label: "Contact", href: "#contact" },
 ] as const;
@@ -41,33 +48,88 @@ export const stats = [
 
 export const programs = [
   {
+    slug: "strength-training",
     title: "Strength Training",
     description: "Build power, muscle, and confidence.",
     image: "/images/strength-training.webp",
     alt: "Athlete gripping a loaded barbell before a deadlift on the training floor",
     meta: "Barbell · Progressive overload",
+    level: "All levels",
+    duration: "60 min",
+    sessions: "3–4 / week",
+    intro:
+      "A structured barbell programme built on the lifts that carry over to everything else: squat, deadlift, press and row. You are coached on technique first, then loaded progressively so strength arrives without injury.",
+    highlights: [
+      "Technique screening and a starting-weight assessment in week one",
+      "Written block programming — you always know the next session",
+      "Calibrated plates and competition bars on every platform",
+      "Re-tested benchmarks every 8 weeks so progress is measurable",
+    ],
+    suitedTo:
+      "Beginners who want to learn the lifts properly, and experienced lifters chasing a bigger total.",
   },
   {
+    slug: "functional-fitness",
     title: "Functional Fitness",
     description: "Move better. Perform better.",
     image: "/images/functional-fitness.webp",
     alt: "Member training with free weights in the functional training zone",
     meta: "Mobility · Full body",
+    level: "All levels",
+    duration: "45 min",
+    sessions: "2–4 / week",
+    intro:
+      "Full-body sessions that train the patterns real life uses — carrying, hinging, pushing, pulling and rotating. Expect kettlebells, sleds, ropes and bodyweight work rather than isolated machine circuits.",
+    highlights: [
+      "Mobility screen at intake, then targeted work on your restrictions",
+      "Mixed-modality sessions that never repeat the same week twice",
+      "Scaled options in every class, from first-timer to athlete",
+      "Emphasis on joint health and staying pain-free long term",
+    ],
+    suitedTo:
+      "Anyone whose job or sport demands a body that moves well, and members returning after a long break.",
   },
   {
+    slug: "personal-training",
     title: "Personal Training",
     description: "One-on-one coaching built around your goals.",
     image: "/images/personal-training.webp",
     alt: "Personal trainer working a cable machine during a coaching session",
     meta: "1:1 · Fully tailored",
+    level: "Fully tailored",
+    duration: "60 min",
+    sessions: "1–5 / week",
+    intro:
+      "Undivided attention from a coach who knows your history, your schedule and your goal. Every session is planned in advance, adjusted on the day, and logged so nothing is left to memory.",
+    highlights: [
+      "Full assessment: movement, strength baseline, lifestyle and nutrition",
+      "A programme written for your body — never a template",
+      "Session notes and progress tracking you can see any time",
+      "Flexible scheduling, including early mornings and late evenings",
+    ],
+    suitedTo:
+      "Members with a specific deadline or goal, anyone rehabbing an injury, and those who simply train better with accountability.",
   },
   {
+    slug: "hiit-and-conditioning",
     title: "HIIT & Conditioning",
-    description:
-      "High-intensity workouts designed to improve endurance.",
+    description: "High-intensity workouts designed to improve endurance.",
     image: "/images/hiit-conditioning.webp",
     alt: "Rows of cardio machines in the IRONFORGE conditioning studio",
     meta: "Intervals · Engine work",
+    level: "Intermediate",
+    duration: "40 min",
+    sessions: "2–3 / week",
+    intro:
+      "Short, hard, precisely dosed intervals that build a bigger engine without wrecking your recovery. Work capacity is measured, not guessed — every block has a target you are chasing.",
+    highlights: [
+      "Bike, rower, ski-erg and sled intervals with prescribed pacing",
+      "Heart-rate guided so intensity is real, not just uncomfortable",
+      "Sessions capped at 40 minutes — high quality, not junk volume",
+      "Programmed around your lifting so the two support each other",
+    ],
+    suitedTo:
+      "Members who want visible conditioning gains, athletes in season, and anyone short on time.",
   },
 ] as const;
 
@@ -244,5 +306,102 @@ export const pricing = [
       "Priority Support",
     ],
     featured: false,
+  },
+] as const;
+
+export const scheduleDays = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+] as const;
+
+export type ScheduleDay = (typeof scheduleDays)[number];
+
+/** Demo timetable — replace with the club's real class schedule. */
+export const schedule: Record<
+  ScheduleDay,
+  { time: string; name: string; coach: string; duration: string; intensity: "Low" | "Moderate" | "High" }[]
+> = {
+  Monday: [
+    { time: "06:00", name: "Strength — Lower Body", coach: "Alex Carter", duration: "60 min", intensity: "High" },
+    { time: "12:30", name: "Express HIIT", coach: "Sofia Reyes", duration: "40 min", intensity: "High" },
+    { time: "18:00", name: "Functional Fitness", coach: "Maya Brooks", duration: "45 min", intensity: "Moderate" },
+    { time: "19:30", name: "Mobility & Recovery", coach: "Maya Brooks", duration: "45 min", intensity: "Low" },
+  ],
+  Tuesday: [
+    { time: "06:00", name: "Conditioning — Engine", coach: "Sofia Reyes", duration: "40 min", intensity: "High" },
+    { time: "17:00", name: "Strength — Upper Body", coach: "Alex Carter", duration: "60 min", intensity: "High" },
+    { time: "19:00", name: "Beginners Barbell", coach: "Alex Carter", duration: "60 min", intensity: "Moderate" },
+  ],
+  Wednesday: [
+    { time: "06:00", name: "Functional Fitness", coach: "Maya Brooks", duration: "45 min", intensity: "Moderate" },
+    { time: "12:30", name: "Express HIIT", coach: "Sofia Reyes", duration: "40 min", intensity: "High" },
+    { time: "18:00", name: "Strength — Full Body", coach: "Alex Carter", duration: "60 min", intensity: "High" },
+  ],
+  Thursday: [
+    { time: "06:00", name: "Conditioning — Intervals", coach: "Sofia Reyes", duration: "40 min", intensity: "High" },
+    { time: "17:30", name: "Functional Fitness", coach: "Maya Brooks", duration: "45 min", intensity: "Moderate" },
+    { time: "19:00", name: "Mobility & Recovery", coach: "Maya Brooks", duration: "45 min", intensity: "Low" },
+  ],
+  Friday: [
+    { time: "06:00", name: "Strength — Lower Body", coach: "Alex Carter", duration: "60 min", intensity: "High" },
+    { time: "12:30", name: "Lunch Express", coach: "Sofia Reyes", duration: "30 min", intensity: "Moderate" },
+    { time: "18:00", name: "Friday Finisher", coach: "Sofia Reyes", duration: "45 min", intensity: "High" },
+  ],
+  Saturday: [
+    { time: "08:00", name: "Weekend Strength", coach: "Alex Carter", duration: "75 min", intensity: "High" },
+    { time: "10:00", name: "Functional Fitness", coach: "Maya Brooks", duration: "45 min", intensity: "Moderate" },
+    { time: "11:30", name: "Open Gym Coaching", coach: "Rotating coach", duration: "90 min", intensity: "Low" },
+  ],
+  Sunday: [
+    { time: "09:00", name: "Mobility & Recovery", coach: "Maya Brooks", duration: "45 min", intensity: "Low" },
+    { time: "10:30", name: "Conditioning — Engine", coach: "Sofia Reyes", duration: "40 min", intensity: "High" },
+  ],
+};
+
+export const faqs = [
+  {
+    question: "Do I need to sign a long contract?",
+    answer:
+      "No. Every IRONFORGE membership is month to month — you can switch plans or cancel any time from your member account, and there is no joining fee.",
+  },
+  {
+    question: "Is the free trial really free?",
+    answer:
+      "Yes. Your first session includes a facility tour, a movement assessment with a coach and a full workout. No card details, no obligation to join afterwards.",
+  },
+  {
+    question: "I have never trained before. Will I be out of my depth?",
+    answer:
+      "Not at all — roughly half of our new members start with no gym experience. Every programme has scaled options, and your first session is spent learning the movements rather than chasing numbers.",
+  },
+  {
+    question: "Are classes included in my membership?",
+    answer:
+      "Group classes are included on the Popular and Elite plans. Starter members can attend classes as a paid add-on, or upgrade at any time.",
+  },
+  {
+    question: "What are the opening hours?",
+    answer:
+      "Staffed hours are 5:00 AM – 11:00 PM Monday to Friday and 7:00 AM – 9:00 PM at weekends. Members get secure 24/7 access with their key fob outside those hours.",
+  },
+  {
+    question: "Do you have showers, lockers and parking?",
+    answer:
+      "Yes — changing rooms with showers and day lockers are included with every plan, and there is free on-site parking for members.",
+  },
+  {
+    question: "Can I freeze my membership if I travel?",
+    answer:
+      "You can freeze any plan for up to three months a year at no cost. Just let the front desk know before your next billing date.",
+  },
+  {
+    question: "Do you offer personal training on top of a membership?",
+    answer:
+      "Personal training is included in the Elite plan and can be added to any other plan as single sessions or discounted blocks of five or ten.",
   },
 ] as const;

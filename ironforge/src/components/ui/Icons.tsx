@@ -97,6 +97,12 @@ export const Quote = (p: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+export const Star = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...p} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+    <path d="m12 2.6 2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.44 6.2 20.5l1.1-6.47-4.7-4.58 6.5-.95L12 2.6Z" />
+  </svg>
+);
+
 export const Instagram = (p: SVGProps<SVGSVGElement>) => (
   <svg {...base} {...p}>
     <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
